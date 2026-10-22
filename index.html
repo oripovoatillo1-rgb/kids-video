@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kids World</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f0f8ff;
+  color: #26344a;
+}
+header {
+  background: linear-gradient(120deg,#7067ff,#ff83bb);
+  color: white;
+  text-align: center;
+  padding: 30px 15px;
+  border-radius: 0 0 25px 25px;
+}
+h1 { margin-top: 0; }
+main { padding: 16px; }
+input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  font-size: 16px;
+}
+.videos {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+.card {
+  background: white;
+  padding: 16px 10px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 3px 10px #0001;
+}
+.emoji { font-size: 45px; }
+button {
+  background: #7067ff;
+  color: white;
+  border: 0;
+  border-radius: 10px;
+  padding: 11px;
+  width: 100%;
+  margin-top: 8px;
+}
+#player { margin-top: 20px; }
+iframe { width: 100%; aspect-ratio: 16/9; border: 0; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🌈 Kids World</h1>
+  <p>Fun videos for little explorers!</p>
+</header>
+<main>
+  <h2>🎬 Our videos</h2>
+  <input id="search" placeholder="Search videos...">
+  <div class="videos" id="videos"></div>
+  <div id="player"></div>
+</main>
+<script>
+const items = [
+  {name:"Kids Songs", emoji:"🎵", url:""},
+  {name:"Cute Animals", emoji:"🦁", url:""},
+  {name:"Learn Numbers", emoji:"🔢", url:""},
+  {name:"Fairy Tales", emoji:"🧸", url:""}
+];
+
+function show(list) {
+  const area = document.getElementById("videos");
+  area.replaceChildren();
+
+  list.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const emoji = document.createElement("div");
+    emoji.className = "emoji";
+    emoji.textContent = item.emoji;
+
+    const title = document.createElement("h3");
+    title.textContent = item.name;
+
+    const button = document.createElement("button");
+    button.textContent = item.url ? "▶ Watch" : "Coming soon";
+
+    button.onclick = () => {
+      if (!item.url) {
+        alert("Video coming soon!");
+        return;
+      }
+      const frame = document.createElement("iframe");
+      frame.src = item.url;
+      frame.title = item.name;
+      frame.allowFullscreen = true;
+      const player = document.getElementById("player");
+      player.replaceChildren(frame);
+    };
+
+    card.append(emoji,title,button);
+    area.appendChild(card);
+  });
+}
+
+document.getElementById("search").addEventListener("input", e => {
+  const q = e.target.value.toLowerCase();
+  show(items.filter(v => v.name.toLowerCase().includes(q)));
+});
+show(items);
+</script>
+</body>
+</html>
